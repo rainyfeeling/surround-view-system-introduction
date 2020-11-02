@@ -7,7 +7,7 @@ import surround_view.param_settings as settings
 
 
 yamls_dir = os.path.join(os.getcwd(), "yaml")
-camera_ids = [4, 3, 5, 6]
+camera_ids = [2, 14, 6, 10]
 flip_methods = [0, 2, 0, 2]
 names = settings.camera_names
 cameras_files = [os.path.join(yamls_dir, name + ".yaml") for name in names]
@@ -15,7 +15,7 @@ camera_models = [FisheyeCameraModel(camera_file, name) for camera_file, name in 
 
 
 def main():
-    capture_tds = [CaptureThread(camera_id, flip_method)
+    capture_tds = [CaptureThread(camera_id, flip_method, resolution=(640, 480), use_gst=False)
                    for camera_id, flip_method in zip(camera_ids, flip_methods)]
     capture_buffer_manager = MultiBufferManager()
     for td in capture_tds:
