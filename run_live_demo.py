@@ -16,7 +16,7 @@ camera_models = [FisheyeCameraModel(camera_file, name) for camera_file, name in 
 
 
 def main():
-    capture_tds = [CaptureThread(camera_id, flip_method, resolution=(640, 480), use_gst=False)
+    capture_tds = [CaptureThread(camera_id, flip_method, resolution=(1280, 720), use_gst=False)
                    for camera_id, flip_method in zip(camera_ids, flip_methods)]
     capture_buffer_manager = MultiBufferManager()
     for td in capture_tds:
