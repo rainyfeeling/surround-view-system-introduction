@@ -36,10 +36,13 @@ def show_cam_img(caps):
 
     cv2.destroyAllWindows()
 
-def init_caps(cam_list):
+def init_caps(cam_list, resolution=(1280,720)):
     caps = []
     for iCam in cam_list:
         cap = cv2.VideoCapture(iCam)
+        cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M','J','P','G'))
+        cap.set(3, resolution[0])
+        cap.set(4, resolution[1])
         caps.append(cap)
 
     return caps
