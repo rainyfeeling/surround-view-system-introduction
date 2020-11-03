@@ -1,5 +1,6 @@
 import os
 import cv2
+import time
 from surround_view import CaptureThread, CameraProcessingThread
 from surround_view import FisheyeCameraModel, BirdView
 from surround_view import MultiBufferManager, ProjectedImageBuffer
@@ -21,6 +22,7 @@ def main():
     for td in capture_tds:
         capture_buffer_manager.bind_thread(td, buffer_size=8)
         if (td.connect_camera()):
+            print("camera ok")
             td.start()
 
     proc_buffer_manager = ProjectedImageBuffer()
@@ -30,14 +32,21 @@ def main():
                    for camera_id, camera_model in zip(camera_ids, camera_models)]
     for td in process_tds:
         proc_buffer_manager.bind_thread(td)
+        print("process buffer mgr ok")
         td.start()
 
     birdview = BirdView(proc_buffer_manager)
     birdview.load_weights_and_masks("./weights.png", "./masks.png")
     birdview.start()
+    time.sleep(3)
     while True:
-        img = cv2.resize(birdview.get(), (300, 400))
+        print("birdview loop ...")
+        data = birdview.get()
+        print("birdview get ok...")
+        img = cv2.resize(data, (300, 400))
+        print("resize ok...")
         cv2.imshow("birdview", img)
+        print("imshow ok...")
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             break

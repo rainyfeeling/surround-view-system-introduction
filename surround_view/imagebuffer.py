@@ -13,6 +13,7 @@ class Buffer(object):
         self.clear_buffer_get = QSemaphore(1)
         self.queue_mutex = QMutex()
         self.queue = Queue(self.buffer_size)
+        print("Init Buffer queue: %s (%d)" %(self.queue, buffer_size))
 
     def add(self, data, drop_if_full=False):
         self.clear_buffer_add.acquire()
@@ -45,6 +46,7 @@ class Buffer(object):
         return data
 
     def clear(self):
+        print("clear")
         # check if buffer contains items
         if self.queue.qsize() > 0:
             # stop adding items to buffer (will return false if an item is currently being added to the buffer)
@@ -65,6 +67,7 @@ class Buffer(object):
                     # allow get method to resume
                     self.clear_buffer_get.release()
                 else:
+                    self.clear_buffer_add.release()
                     return False
                 # allow add method to resume
                 self.clear_buffer_add.release()

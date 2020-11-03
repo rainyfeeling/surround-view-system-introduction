@@ -37,6 +37,7 @@ class CaptureThread(BaseThread):
         self.buffer_manager = None
 
     def run(self):
+        print("capture thread is runing!")
         if self.buffer_manager is None:
             raise ValueError("This thread has not been binded to any buffer manager yet")
 
@@ -57,11 +58,13 @@ class CaptureThread(BaseThread):
             self.buffer_manager.sync(self.device_id)
 
             if not self.cap.grab():
+                print("failed to capture in device: %d" %(self.device_id))
                 continue
 
             # retrieve frame and add it to buffer
             _, frame = self.cap.retrieve()
             img_frame = ImageFrame(self.clock.msecsSinceStartOfDay(), frame)
+            #print("add captured frame for device: %d" %(self.device_id))
             self.buffer_manager.get_device(self.device_id).add(img_frame, self.drop_if_full)
 
             # update statistics
@@ -86,6 +89,8 @@ class CaptureThread(BaseThread):
             # try to set camera resolution
             if self.resolution is not None:
                 width, height = self.resolution
+                print("set resolution for device: %d with %dx%d" %(self.device_id, width, height))
+                self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
                 self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
                 self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
                 # some camera may become closed if the resolution is not supported

@@ -325,11 +325,14 @@ class BirdView(BaseThread):
 
             self.processing_mutex.lock()
 
+            print("running in birdview thread!")
             self.update_frames(self.proc_buffer_manager.get().values())
+            print("to stitch!")
             self.make_luminance_balance().stitch_all_parts()
             self.make_white_balance()
             self.copy_car_image()
             self.buffer.add(self.image.copy(), self.drop_if_full)
+            print("add stitched image!")
             self.processing_mutex.unlock()
 
             # update statistics
