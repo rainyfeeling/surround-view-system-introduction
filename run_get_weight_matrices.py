@@ -10,7 +10,7 @@ def main():
     names = settings.camera_names
     images = [os.path.join(os.getcwd(), "images", name + ".png") for name in names]
     yamls = [os.path.join(os.getcwd(), "yaml", name + ".yaml") for name in names]
-    camera_models = [FisheyeCameraModel(camera_file, camera_name) for camera_file, camera_name in zip (yamls, names)]
+    camera_models = [FisheyeCameraModel(yaml_file, camera_name) for yaml_file, camera_name in zip (yamls, names)]
 
     projected = []
     for image_file, camera in zip(images, camera_models):
