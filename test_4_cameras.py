@@ -15,8 +15,10 @@ def get_cam_lst(cam_lst=range(0, 24)):
         cap.release()
     return arr
 
-def show_cam_img(cap_device):
+def show_cam_img(caps):
+    idx = 0
     while True:
+        cap_device = caps[idx]
         ret, frame = cap_device.read()
         if ret:
             cv2.imshow('video', frame)
@@ -26,6 +28,11 @@ def show_cam_img(cap_device):
         c = cv2.waitKey(1)
         if c == ord('q'):
             break
+        if c == ord('c'):
+            idx += 1
+            if idx >= len(caps):
+                idx = 0
+            continue
 
     cv2.destroyAllWindows()
 
@@ -47,7 +54,7 @@ def main():
 
     caps = init_caps(cam_list)
 
-    show_cam_img(caps[0])
+    show_cam_img(caps)
 
     deinit_caps(caps)
 
