@@ -19,6 +19,7 @@ def get_cam_lst(cam_lst=range(0, 24)):
 
 def show_cam_img(caps, cam_list):
     idx = 0
+    cnt = 0
     while True:
         cap_device = caps[idx]
         ret, frame = cap_device.read()
@@ -38,9 +39,10 @@ def show_cam_img(caps, cam_list):
         if c == ord('s'):
             # save the picture
             if ret:
-                name = 'video{}.png'.format(cam_list[idx])
+                name = 'video{}_{}.png'.format(cam_list[idx], cnt)
                 cv2.imwrite(name, frame)
                 print("saved file: %s!" %name)
+                cnt += 1
 
     cv2.destroyAllWindows()
 
