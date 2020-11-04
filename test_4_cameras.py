@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import cv2
 import time
@@ -15,7 +17,7 @@ def get_cam_lst(cam_lst=range(0, 24)):
         cap.release()
     return arr
 
-def show_cam_img(caps):
+def show_cam_img(caps, cam_list):
     idx = 0
     while True:
         cap_device = caps[idx]
@@ -33,6 +35,12 @@ def show_cam_img(caps):
             if idx >= len(caps):
                 idx = 0
             continue
+        if c == ord('s'):
+            # save the picture
+            if ret:
+                name = 'video{}.png'.format(cam_list[idx])
+                cv2.imwrite(name, frame)
+                print("saved file: %s!" %name)
 
     cv2.destroyAllWindows()
 
@@ -57,7 +65,7 @@ def main():
 
     caps = init_caps(cam_list)
 
-    show_cam_img(caps)
+    show_cam_img(caps, cam_list)
 
     deinit_caps(caps)
 
