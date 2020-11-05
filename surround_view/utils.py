@@ -100,6 +100,8 @@ def get_weight_mask_matrix(imA, imB, dist_threshold=5):
     """
     overlapMask = get_overlap_region_mask(imA, imB)
     overlapMaskInv = cv2.bitwise_not(overlapMask)
+    # return all points which pixel value == 255
+    # return (array of x, array of y), and all (x, y)'s value == 255
     indices = np.where(overlapMask == 255)
 
     imA_diff = cv2.bitwise_and(imA, imA, mask=overlapMaskInv)
@@ -110,7 +112,7 @@ def get_weight_mask_matrix(imA, imB, dist_threshold=5):
     polyA = get_outmost_polygon_boundary(imA_diff)
     polyB = get_outmost_polygon_boundary(imB_diff)
 
-    for y, x in zip(*indices):
+    for y, x in zip(*indices):    # * means extract the tuple as elements as parameters. y is in front as first one is row.
         distToB = cv2.pointPolygonTest(polyB, (x, y), True)
         if distToB < dist_threshold:
             distToA = cv2.pointPolygonTest(polyA, (x, y), True)

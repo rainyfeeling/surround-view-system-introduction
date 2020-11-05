@@ -72,10 +72,12 @@ class ProjectedImageBuffer(object):
 
 
 def FI(front_image):
+    # all rows, xl cols from left. col[0] to col[xl-1]
     return front_image[:, :xl]
 
 
 def FII(front_image):
+    # all rows, col[xr] to the right.
     return front_image[:, xr:]
 
 
