@@ -24,7 +24,7 @@ class FisheyeCameraModel(object):
         self.shift_xy = (0, 0)
         self.undistort_maps = None
         self.project_matrix = None
-        self.project_shape = settings.project_shapes[self.camera_name]            
+        self.project_shape = settings.project_shapes[self.camera_name]
         self.load_camera_params()
 
     def load_camera_params(self):
@@ -73,9 +73,9 @@ class FisheyeCameraModel(object):
         return self
 
     def undistort(self, image):
-        result = cv2.remap(image, *self.undistort_maps, interpolation=cv2.INTER_LINEAR,
-                           borderMode=cv2.BORDER_CONSTANT)
-        return result
+        #result = cv2.remap(image, *self.undistort_maps, interpolation=cv2.INTER_LINEAR,
+        #                   borderMode=cv2.BORDER_CONSTANT)
+        return image
 
     def project(self, image):
         result = cv2.warpPerspective(image, self.project_matrix, self.project_shape)
