@@ -43,8 +43,9 @@ def main():
         print("birdview loop ...")
         data = birdview.get()
         print("birdview get ok...")
-        img = cv2.resize(data, (300, 400))
-        print("resize ok...")
+        # img = cv2.resize(data, (300, 400))
+        # print("resize ok...")
+        img = data
         cv2.imshow("birdview", img)
         print("imshow ok...")
         key = cv2.waitKey(1) & 0xFF
