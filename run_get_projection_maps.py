@@ -12,8 +12,7 @@ import surround_view.param_settings as settings
 
 
 def get_projection_map(camera_model, image):
-    #und_image = camera_model.undistort(image)
-    und_image = image
+    und_image = camera_model.undistort(image)
     name = camera_model.camera_name
     gui = PointSelector(und_image, title=name)
     dst_points = settings.project_keypoints[name]
@@ -58,7 +57,6 @@ def main():
     camera_file = os.path.join(os.getcwd(), "yaml", camera_name + ".yaml")
     image_file = os.path.join(os.getcwd(), "images", camera_name + ".png")
     image = cv2.imread(image_file)
-    cv2.imwrite("tmp.png", image)
     camera = FisheyeCameraModel(camera_file, camera_name)
     camera.set_scale_and_shift(scale, shift)
     success = get_projection_map(camera, image)
