@@ -116,7 +116,11 @@ def get_weight_mask_matrix(imA, imB, dist_threshold=5):
             distToA = cv2.pointPolygonTest(polyA, (x, y), True)
             distToB *= distToB
             distToA *= distToA
-            G[y, x] = distToB / (distToA + distToB)
+            if distToA == 0 and distToB == 0:
+                print("find zeros!")
+                G[y, x] = 0
+            else:
+                G[y, x] = distToB / (distToA + distToB)
 
     return G, overlapMask
 
