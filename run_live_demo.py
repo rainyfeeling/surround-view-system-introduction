@@ -8,7 +8,7 @@ import surround_view.param_settings as settings
 
 
 yamls_dir = os.path.join(os.getcwd(), "yaml")
-camera_ids = [2, 14, 6, 10]
+camera_ids = [10, 2, 14, 6]
 flip_methods = [0, 2, 0, 2]
 names = settings.camera_names
 cameras_files = [os.path.join(yamls_dir, name + ".yaml") for name in names]
