@@ -177,7 +177,21 @@ class DistanceCalculator(object):
                 return True
 
 def main():
-    img = cv2.imread('../imA.png')
+    from utils import get_overlap_region_mask, get_outmost_polygon_boundary
+
+    imA = cv2.imread('../imA.png')
+    imB = cv2.imread('../imB.png')
+    overlapMask = get_overlap_region_mask(imA, imB)
+    overlapMaskInv = cv2.bitwise_not(overlapMask)
+    imA_diff = cv2.bitwise_and(imA, imA, mask=overlapMaskInv)
+    imB_diff = cv2.bitwise_and(imB, imB, mask=overlapMaskInv)
+    polyA = get_outmost_polygon_boundary(imA_diff)
+    polyB = get_outmost_polygon_boundary(imB_diff)
+
+    img = imA.copy()
+    cv2.polylines(img, [polyA], True, (255, 0, 0), 2)
+    cv2.polylines(img, [polyB], True, (0, 255, 0), 2)
+
     gui = DistanceCalculator(img, img)
     choice = gui.loop()
     cv2.destroyAllWindows()
