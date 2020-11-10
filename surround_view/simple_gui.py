@@ -139,10 +139,11 @@ class DistanceCalculator(object):
     POINT_COLOR = (0, 0, 255)
     FILL_COLOR = (0, 255, 255)
 
-    def __init__(self, image, mask, title="DistanceCalculator"):
+    def __init__(self, image, polyA, polyB, title="DistanceCalculator"):
         self.image = image
-        self.mask = mask
         self.title = title
+        self.polyA = polyA
+        self.polyB = polyB
 
     def onclick(self, event, x, y, flags, param):
         """
@@ -151,6 +152,9 @@ class DistanceCalculator(object):
         """
         if event == cv2.EVENT_LBUTTONDOWN:
             print("click ({}, {})".format(x, y))
+            distToB = cv2.pointPolygonTest(self.polyB, (x, y), True)
+            distToA = cv2.pointPolygonTest(self.polyA, (x, y), True)
+            print("distA: {}, distB: {}".format(distToA, distToB))
 
     def loop(self):
         """
@@ -192,7 +196,7 @@ def main():
     cv2.polylines(img, [polyA], True, (255, 0, 0), 2)
     cv2.polylines(img, [polyB], True, (0, 255, 0), 2)
 
-    gui = DistanceCalculator(img, img)
+    gui = DistanceCalculator(img, polyA, polyB)
     choice = gui.loop()
     cv2.destroyAllWindows()
 
