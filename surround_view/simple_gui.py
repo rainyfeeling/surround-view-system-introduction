@@ -129,3 +129,58 @@ class PointSelector(object):
         new_mask = cv2.bitwise_and(new_image, new_image, mask=mask)
         cv2.addWeighted(image, 1.0, new_mask, 0.5, 0.0, image)
         return image
+
+class DistanceCalculator(object):
+    """
+    show a image, which drawed a polygon. When move the mouse, it will show
+    the distance from current point to the polygon.
+    """
+
+    POINT_COLOR = (0, 0, 255)
+    FILL_COLOR = (0, 255, 255)
+
+    def __init__(self, image, mask, title="DistanceCalculator"):
+        self.image = image
+        self.mask = mask
+        self.title = title
+
+    def onclick(self, event, x, y, flags, param):
+        """
+        Click on a point (x, y) will add this points to the list
+        and re-draw the image.
+        """
+        if event == cv2.EVENT_LBUTTONDOWN:
+            print("click ({}, {})".format(x, y))
+
+    def loop(self):
+        """
+        Press "q" will exist the gui and return False
+        Press "Enter" will exist the gui and return True.
+        """
+        cv2.namedWindow(self.title)
+        cv2.setMouseCallback(self.title, self.onclick, param=())
+        cv2.imshow(self.title, self.image)
+
+        while True:
+            click = cv2.getWindowProperty(self.title, cv2.WND_PROP_AUTOSIZE)
+            if click < 0:
+                return False
+
+            key = cv2.waitKey(1) & 0xFF
+
+            # press q to return False
+            if key == ord("q"):
+                return False
+
+            # press Enter to confirm
+            if key == 13:
+                return True
+
+def main():
+    img = cv2.imread('../imA.png')
+    gui = DistanceCalculator(img, img)
+    choice = gui.loop()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
