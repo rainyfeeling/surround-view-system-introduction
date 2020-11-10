@@ -156,6 +156,11 @@ class DistanceCalculator(object):
             distToA = cv2.pointPolygonTest(self.polyA, (x, y), True)
             print("distA: {}, distB: {}".format(distToA, distToB))
 
+        if event == cv2.EVENT_MOUSEMOVE:
+            distToB = cv2.pointPolygonTest(self.polyB, (x, y), True)
+            distToA = cv2.pointPolygonTest(self.polyA, (x, y), True)
+            print("({}, {}) - distA: {}, distB: {}".format(x, y, distToA, distToB))
+
     def loop(self):
         """
         Press "q" will exist the gui and return False
