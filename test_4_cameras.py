@@ -50,9 +50,15 @@ def init_caps(cam_list, resolution=(1280,720)):
     caps = []
     for iCam in cam_list:
         cap = cv2.VideoCapture(iCam)
-        cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M','J','P','G'))
-        cap.set(3, resolution[0])
-        cap.set(4, resolution[1])
+        if not cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M','J','P','G')):
+            print("Failed to set PROP_FOURCC!")
+
+        if not cap.set(3, resolution[0]):
+            print("Failed to set PROP_WIDTH!")
+
+        if not cap.set(4, resolution[1]):
+            print("Failed to set PROP_HEIGHT!")
+
         caps.append(cap)
 
     return caps
