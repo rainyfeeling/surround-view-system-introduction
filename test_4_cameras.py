@@ -21,9 +21,12 @@ def show_cam_img(caps, cam_list):
     idx = 0
     cnt = 0
     while True:
+        ret = False
         cap_device = caps[idx]
-        ret, frame = cap_device.read()
+        if (cap_device.grab()):
+            ret, frame = cap_device.retrieve()
         if ret:
+            frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
             cv2.imshow('video', frame)
         else:
             print("failed read frame!")
@@ -58,6 +61,9 @@ def init_caps(cam_list, resolution=(1280,720)):
 
         if not cap.set(4, resolution[1]):
             print("Failed to set PROP_HEIGHT!")
+
+        if not cap.set(cv2.CAP_PROP_CONVERT_RGB, 0.0):
+            print("Failed to set PROP_CONVERT_RGB!")
 
         caps.append(cap)
 
