@@ -98,6 +98,8 @@ def get_weight_mask_matrix(imA, imB, dist_threshold=5):
     """
     Get the weight matrix G that combines two images imA, imB smoothly.
     """
+    #cv2.imwrite('imA.png', imA)
+    #cv2.imwrite('imB.png', imB)
     overlapMask = get_overlap_region_mask(imA, imB)
     overlapMaskInv = cv2.bitwise_not(overlapMask)
     # return all points which pixel value == 255
@@ -119,7 +121,7 @@ def get_weight_mask_matrix(imA, imB, dist_threshold=5):
             distToB *= distToB
             distToA *= distToA
             if distToA == 0 and distToB == 0:
-                print("find zeros!")
+                print("point (%d, %d) in both polyA and polyB. They are crossed, choose it in polyB!")
                 G[y, x] = 0
             else:
                 G[y, x] = distToB / (distToA + distToB)

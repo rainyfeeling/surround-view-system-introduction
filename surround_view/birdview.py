@@ -301,9 +301,13 @@ class BirdView(BaseThread):
     def get_weights_and_masks(self, images):
         front, back, left, right = images
         G0, M0 = utils.get_weight_mask_matrix(FI(front), LI(left))
+        print("I")
         G1, M1 = utils.get_weight_mask_matrix(FII(front), RII(right))
+        print("II")
         G2, M2 = utils.get_weight_mask_matrix(BIII(back), LIII(left))
+        print("III")
         G3, M3 = utils.get_weight_mask_matrix(BIV(back), RIV(right))
+        print("IV")
         self.weights = [np.stack((G, G, G), axis=2) for G in (G0, G1, G2, G3)]
         self.masks = [(M / 255.0).astype(np.int) for M in (M0, M1, M2, M3)]
         return np.stack((G0, G1, G2, G3), axis=2), np.stack((M0, M1, M2, M3), axis=2)
