@@ -18,6 +18,8 @@ def get_cam_lst(cam_lst=range(0, 24)):
     return arr
 
 def show_cam_img(caps, cam_list):
+    DEBUG=0
+
     idx = 0
     cnt = 0
     while True:
@@ -25,6 +27,14 @@ def show_cam_img(caps, cam_list):
         cap_device = caps[idx]
         if (cap_device.grab()):
             ret, frame = cap_device.retrieve()
+
+            if DEBUG:
+                arr = frame.tobytes()
+                # first 8 bytes
+                print("%02x %02x %02x %02x  %02x %02x %02x %02x" %(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7]))
+                # last 8 bytes
+                arr = arr[-8:]
+                print("%02x %02x %02x %02x  %02x %02x %02x %02x" %(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7]))
         if ret:
             frame = cv2.imdecode(frame, cv2.IMREAD_COLOR)
             cv2.imshow('video', frame)
